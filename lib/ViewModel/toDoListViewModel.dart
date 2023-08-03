@@ -70,24 +70,16 @@ class ToDoListViewModel extends ChangeNotifier{
   Future<void> filterToDoList(String? date, Color? color) async {
     List<ToDoListModel>? tempList = [];
 
-    for (int i = 0; i< toDoLit!.length; i++){
+    tempList = toDoLit!.where((element) =>
+        date == element.date && color == null
+        ||
+        color == element.color  && date == ""
+        ||
+        (color == element.color && date== element.date )).toList();
 
-      if((date == toDoLit![i].date && color == toDoLit![i].color)){
-        tempList.add(toDoLit![i]);
-      }
-
-      if (date != null && color == null && date == toDoLit![i].date ) {
-        tempList.add(toDoLit![i]);
-      }
-
-      if (color != null && date != toDoLit![i].date && color == toDoLit![i].color) {
-        tempList.add(toDoLit![i]);
-      }
-    }
-
-    toDoLit!.clear();
-    isFilter = true;
     toDoLit = tempList;
+      isFilter = true;
+
     notifyListeners();
   }
 
